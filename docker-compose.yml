@@ -10,61 +10,53 @@ services:
             - db
         expose:
             - 9000
-        volumes:
-            - ./docker/web1:/var/www/html/public
 
-    # web2:
-    #     container_name: esgi-docker-compose-web2
-    #     build:
-    #         context: .
-    #         dockerfile: docker/web/Dockerfile
-    #     ports:
-    #         - 8001:80
-    #     restart: always
-    #     depends_on:
-    #         - db
-    #     volumes:
-    #         - ./docker/web2:/var/www/html
+    web2:
+        container_name: esgi-docker-compose-web2
+        build:
+            context: .
+            dockerfile: docker/web/Dockerfile
+        depends_on:
+            - db
+        expose:
+            - 9000
 
     nginx1:
         container_name: esgi-docker-compose-nginx1
         build:
             context: .
             dockerfile: docker/nginx1/Dockerfile
-        volumes:
-            - ./docker/web1:/var/www/html/public
-        ports:
-            - "8080:80"
         depends_on:
             - web1
+        ports:
+            - "8080:80"
 
-    # nginx2:
-    #     container_name: esgi-docker-compose-nginx2
-    #     build:
-    #         context: .
-    #         dockerfile: docker/nginx2/Dockerfile
-    #     volumes:
-    #         - ./docker/web2:/usr/share/nginx/html
-    #     ports:
-    #         - "9001:80"
+    nginx2:
+        container_name: esgi-docker-compose-nginx2
+        build:
+            context: .
+            dockerfile: docker/nginx2/Dockerfile
+        depends_on:
+            - web2
+        ports:
+            - "8081:80"
 
     phpmyadmin:
         container_name: esgi-docker-compose-phpmyadmin
+        depends_on:
+            - db
+        environment:
+            PMA_HOST: db
         image: phpmyadmin/phpmyadmin
         ports:
             - "8004:80"
         restart: always
-        environment:
-            PMA_HOST: db
-        depends_on:
-            - db
 
     db:
-        container_name: esgi-docker-compose-db
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: 'root'
         image: mysql
         restart: always
-        environment:
-            MYSQL_DATABASE: exampledb
-            MYSQL_USER: exampleuser
-            MYSQL_PASSWORD: examplepass
-            MYSQL_RANDOM_ROOT_PASSWORD: "1"

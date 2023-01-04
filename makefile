@@ -2,7 +2,7 @@ compose = docker compose
 exec = $(compose) exec
 
 exec-nginx1 = $(exec) nginx1
-exec-nginx1 = $(exec) nginx1
+exec-nginx2 = $(exec) nginx2
 exec-web1 = $(exec) web1
 exec-web2 = $(exec) web2
 
