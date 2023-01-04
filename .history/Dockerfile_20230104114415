@@ -1,0 +1,8 @@
+# Dockerfile
+FROM ubuntu
+
+# Install Composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+RUN composer Install
+RUN php artisan key:generate

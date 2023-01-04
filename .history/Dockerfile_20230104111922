@@ -1,0 +1,5 @@
+# Dockerfile
+FROM ubuntu
+
+# Install Composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer

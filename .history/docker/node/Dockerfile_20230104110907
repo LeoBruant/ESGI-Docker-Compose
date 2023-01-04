@@ -1,0 +1,5 @@
+FROM node
+
+COPY ./package.json .
+
+CMD npm run dev

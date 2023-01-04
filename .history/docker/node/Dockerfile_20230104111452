@@ -1,0 +1,7 @@
+FROM node
+
+COPY test .
+
+RUN npm i
+
+CMD npm run dev

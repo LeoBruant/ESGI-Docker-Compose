@@ -1,0 +1,6 @@
+compose = docker compose
+exec = $(compose) exec
+exec-web1 = $(exec) web1
+
+ssh-nginx1:
+	$(compose)
