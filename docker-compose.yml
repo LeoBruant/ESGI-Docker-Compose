@@ -6,26 +6,25 @@ services:
         build:
             context: .
             dockerfile: docker/web/Dockerfile
-        ports:
-            - 8000:80
-        restart: always
         depends_on:
             - db
+        expose:
+            - 9000
         volumes:
-            - ./web1/:/var/www/html/
+            - ./docker/web1:/var/www/html/public
 
-    web2:
-        container_name: esgi-docker-compose-web2
-        build:
-            context: .
-            dockerfile: docker/web/Dockerfile
-        ports:
-            - 8001:80
-        restart: always
-        depends_on:
-            - db
-        volumes:
-            - ./web2/:/var/www/html/
+    # web2:
+    #     container_name: esgi-docker-compose-web2
+    #     build:
+    #         context: .
+    #         dockerfile: docker/web/Dockerfile
+    #     ports:
+    #         - 8001:80
+    #     restart: always
+    #     depends_on:
+    #         - db
+    #     volumes:
+    #         - ./docker/web2:/var/www/html
 
     nginx1:
         container_name: esgi-docker-compose-nginx1
@@ -33,19 +32,21 @@ services:
             context: .
             dockerfile: docker/nginx1/Dockerfile
         volumes:
-            - ./web1:/usr/share/nginx/html
+            - ./docker/web1:/var/www/html/public
         ports:
-            - "80:80"
+            - "8080:80"
+        depends_on:
+            - web1
 
-    nginx2:
-        container_name: esgi-docker-compose-nginx2
-        build:
-            context: .
-            dockerfile: docker/nginx2/Dockerfile
-        volumes:
-            - ./web2:/usr/share/nginx/html
-        ports:
-            - "81:80"
+    # nginx2:
+    #     container_name: esgi-docker-compose-nginx2
+    #     build:
+    #         context: .
+    #         dockerfile: docker/nginx2/Dockerfile
+    #     volumes:
+    #         - ./docker/web2:/usr/share/nginx/html
+    #     ports:
+    #         - "9001:80"
 
     phpmyadmin:
         container_name: esgi-docker-compose-phpmyadmin

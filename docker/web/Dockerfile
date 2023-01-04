@@ -1,17 +1,14 @@
 # Dockerfile
-FROM ubuntu
+FROM php:fpm
+
+RUN apt-get update && apt-get install nodejs -y
 
 # Install Composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 # Install Mysql
-RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+# RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
-# Install Node
-RUN apt-get update && apt-get install nodejs -y
-
-WORKDIR /var/www/html
-
-RUN composer Install \
-    php artisan key:generate \
-    php artisan migrate:fresh —seed
+# RUN composer Install \
+#     php artisan key:generate \
+#     php artisan migrate:fresh —seed
