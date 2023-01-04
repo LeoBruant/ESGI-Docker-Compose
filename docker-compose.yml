@@ -8,8 +8,6 @@ services:
             dockerfile: docker/web/Dockerfile
         depends_on:
             - db
-        expose:
-            - 9000
 
     web2:
         container_name: esgi-docker-compose-web2
@@ -18,8 +16,6 @@ services:
             dockerfile: docker/web/Dockerfile
         depends_on:
             - db
-        expose:
-            - 9000
 
     nginx1:
         container_name: esgi-docker-compose-nginx1
@@ -29,7 +25,7 @@ services:
         depends_on:
             - web1
         ports:
-            - "8080:80"
+            - "3000:80"
 
     nginx2:
         container_name: esgi-docker-compose-nginx2
@@ -39,7 +35,7 @@ services:
         depends_on:
             - web2
         ports:
-            - "8081:80"
+            - "8000:80"
 
     phpmyadmin:
         container_name: esgi-docker-compose-phpmyadmin
@@ -49,7 +45,7 @@ services:
             PMA_HOST: db
         image: phpmyadmin/phpmyadmin
         ports:
-            - "8004:80"
+            - "8080:80"
         restart: always
 
     db:
@@ -57,6 +53,6 @@ services:
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_USER: ${DB_USERNAME}
             MYSQL_PASSWORD: ${DB_PASSWORD}
-            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_ROOT_PASSWORD: root
         image: mysql
         restart: always
