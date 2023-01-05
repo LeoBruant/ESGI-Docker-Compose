@@ -26,6 +26,3 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql zip
 RUN composer i
 RUN npm i
 RUN php artisan key:generate
-
-# Build
-CMD npm run build
