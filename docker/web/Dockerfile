@@ -11,13 +11,12 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN apt-get update
 
 # Node
-# RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
 
 # Installs
 RUN apt-get install -y \
     libzip-dev \
     nodejs \
-    npm \
     zip
 
 # Extensions
@@ -29,4 +28,4 @@ RUN npm i
 RUN php artisan key:generate
 
 # Build
-# CMD npm run build
+CMD npm run build
