@@ -2,40 +2,47 @@ version: "3.9"
 
 services:
     web1:
-        container_name: esgi-docker-compose-web1
+        container_name: esgi-docker-web1
         build:
             context: .
-            dockerfile: docker/web/Dockerfile
+            dockerfile: docker/web1/Dockerfile
         depends_on:
             - db
+        volumes:
+            - ./resources:/var/www/html/resources
 
     web2:
-        container_name: esgi-docker-compose-web2
+        container_name: esgi-docker-web2
         build:
             context: .
-            dockerfile: docker/web/Dockerfile
+            dockerfile: docker/web2/Dockerfile
         depends_on:
             - db
+        volumes:
+            - ./resources:/var/www/html/resources
 
     nginx1:
-        container_name: esgi-docker-compose-nginx1
-        build:
-            context: .
-            dockerfile: docker/nginx1/Dockerfile
+        container_name: esgi-docker-nginx1
         depends_on:
             - web1
+        image: nginx
         ports:
             - "3000:80"
-
+        volumes:
+            - ./docker/nginx1/nginx.conf:/etc/nginx/nginx.conf
+            - ./public:/var/www/html/public
+            - ./storage/logs/1:/var/log/nginx
     nginx2:
-        container_name: esgi-docker-compose-nginx2
-        build:
-            context: .
-            dockerfile: docker/nginx2/Dockerfile
+        container_name: esgi-docker-nginx2
+        image: nginx
         depends_on:
             - web2
         ports:
             - "8000:80"
+        volumes:
+            - ./docker/nginx1/nginx.conf:/etc/nginx/nginx.conf
+            - ./public:/var/www/html/public
+            - ./storage/logs/2:/var/log/nginx
 
     phpmyadmin:
         container_name: esgi-docker-compose-phpmyadmin
@@ -50,9 +57,9 @@ services:
 
     db:
         environment:
-            MYSQL_DATABASE: ${DB_DATABASE}
-            MYSQL_USER: ${DB_USERNAME}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: example_app
+            MYSQL_USER: user
+            MYSQL_PASSWORD: pass
             MYSQL_ROOT_PASSWORD: root
         image: mysql
         restart: always

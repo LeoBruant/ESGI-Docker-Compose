@@ -1,38 +1,36 @@
 compose = docker compose
 exec = $(compose) exec
 
-exec-nginx1 = $(exec) nginx1
-exec-nginx2 = $(exec) nginx2
-exec-web1 = $(exec) web1
-exec-web2 = $(exec) web2
+dev:
+	$(exec) web1 npm run dev
+	$(exec) web2 npm run dev
 
-build:
-	$(exec-web1) npm run build
-	$(exec-web2) npm run build
+generate:
+	$(exec) web1 php artisan key:generate
+	$(exec) web2 php artisan key:generate
 
 migrate:
-	$(exec-web1) php artisan migrate:fresh
-	$(exec-web2) php artisan migrate:fresh
+	$(exec) web1 php artisan migrate:fresh --seed
+	$(exec) web2 php artisan migrate:fresh --seed
 
 ssh-nginx1:
-	$(exec-nginx1) sh
+	$(exec) nginx1 sh
 
 ssh-nginx2:
-	$(exec-nginx2) sh
+	$(exec) nginx2 sh
 
 ssh-web1:
-	$(exec-web1) sh
+	$(exec) web1 sh
 
 ssh-web2:
-	$(exec-web2) sh
+	$(exec) web2 sh
 
 start:
 	$(compose) stop
 	$(compose) up --build -d
-	make build
+	make generate
 	make migrate
 
 up:
+	$(compose) stop
 	$(compose) up -d
-	make build
-	make migrate

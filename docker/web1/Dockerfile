@@ -3,6 +3,8 @@ FROM php:8.1-fpm
 
 # Copy
 COPY ./ .
+RUN mv .env-web1 .env
+RUN rm .env-web2
 
 # Install Composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
@@ -25,4 +27,4 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql zip
 # Start
 RUN composer i
 RUN npm i
-RUN php artisan key:generate
+RUN npm run build
