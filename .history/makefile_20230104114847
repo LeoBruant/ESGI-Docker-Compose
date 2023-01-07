@@ -1,4 +1,0 @@
-compose = docker compose
-
-ssh-nginx1:
-	$(compose)

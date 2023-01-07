@@ -1,48 +1,45 @@
 version: "3.9"
 
 services:
-    web1:
-        container_name: esgi-docker-web1
+    app1:
+        container_name: esgi-docker-app1
         build:
             context: .
-            dockerfile: docker/web1/Dockerfile
+            dockerfile: docker/app1/Dockerfile
         depends_on:
             - db
-        volumes:
-            - ./resources:/var/www/html/resources
 
-    web2:
-        container_name: esgi-docker-web2
+    app2:
+        container_name: esgi-docker-app2
         build:
             context: .
-            dockerfile: docker/web2/Dockerfile
+            dockerfile: docker/app2/Dockerfile
         depends_on:
             - db
-        volumes:
-            - ./resources:/var/www/html/resources
 
     nginx1:
         container_name: esgi-docker-nginx1
         depends_on:
-            - web1
+            - app1
         image: nginx
         ports:
             - "3000:80"
         volumes:
             - ./docker/nginx1/nginx.conf:/etc/nginx/nginx.conf
-            - ./public:/var/www/html/public
-            - ./storage/logs/1:/var/log/nginx
+            - ./app1/public:/var/www/html/public
+            - ./app1/storage/logs:/var/log/nginx
+
     nginx2:
         container_name: esgi-docker-nginx2
         image: nginx
         depends_on:
-            - web2
+            - app2
         ports:
             - "8000:80"
         volumes:
-            - ./docker/nginx1/nginx.conf:/etc/nginx/nginx.conf
-            - ./public:/var/www/html/public
-            - ./storage/logs/2:/var/log/nginx
+            - ./docker/nginx2/nginx.conf:/etc/nginx/nginx.conf
+            - ./app2/public:/var/www/html/public
+            - ./app2/storage/logs:/var/log/nginx
 
     phpmyadmin:
         container_name: esgi-docker-compose-phpmyadmin
