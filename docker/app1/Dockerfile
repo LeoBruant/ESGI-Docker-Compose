@@ -25,4 +25,6 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql zip
 # Start
 RUN composer i
 RUN npm i
+RUN chmod -R 777 /var/www/html/public
+RUN chmod -R 777 /var/www/html/storage
 RUN npm run build
