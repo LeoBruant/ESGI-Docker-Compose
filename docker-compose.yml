@@ -42,7 +42,7 @@ services:
             - ./app2/storage/logs:/var/log/nginx
 
     phpmyadmin:
-        container_name: esgi-docker-compose-phpmyadmin
+        container_name: esgi-docker-pma
         depends_on:
             - db
         environment:
